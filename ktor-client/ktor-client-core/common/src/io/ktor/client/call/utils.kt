@@ -52,13 +52,3 @@ suspend fun HttpClient.call(
     this.url.takeFrom(url)
     block()
 }
-
-internal fun HttpResponse.channelWithCloseHandling(): ByteReadChannel = writer {
-    try {
-        content.joinTo(channel, closeOnEnd = true)
-    } catch (cause: CancellationException) {
-        this@channelWithCloseHandling.cancel(cause)
-    } finally {
-        this@channelWithCloseHandling.close()
-    }
-}.channel

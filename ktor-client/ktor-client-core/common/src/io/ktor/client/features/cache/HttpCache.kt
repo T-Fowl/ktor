@@ -14,7 +14,6 @@ import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.util.*
 import io.ktor.util.pipeline.*
-import io.ktor.utils.io.core.*
 
 internal object CacheControl {
     internal val NO_STORE = HeaderValue("no-store")
@@ -122,15 +121,15 @@ class HttpCache(
         return cacheEntry.produceResponse()
     }
 
-    private fun findAndRefresh(response: HttpResponse): HttpResponse? = response.use {
+    private fun findAndRefresh(response: HttpResponse): HttpResponse? {
         val url = response.call.request.url
         val cacheControl = response.cacheControl()
 
         val storage = if (CacheControl.PRIVATE in cacheControl) privateStorage else publicStorage
-        val cache = storage.find(url, response.varyKeys()) ?: return@use null
+        val cache = storage.find(url, response.varyKeys()) ?: return null
 
         storage.store(url, HttpCacheEntry(response.cacheExpires(), response.varyKeys(), cache.response, cache.body))
-        return@use cache.produceResponse()
+        return cache.produceResponse()
     }
 
     private fun findResponse(context: HttpRequestBuilder, content: OutgoingContent): HttpCacheEntry? {

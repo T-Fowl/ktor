@@ -32,8 +32,6 @@ class HttpRedirect {
             while (true) {
                 val location = call.response.headers[HttpHeaders.Location]
 
-                call.close()
-
                 call = execute(HttpRequestBuilder().apply {
                     takeFrom(origin.request)
                     url.parameters.clear()

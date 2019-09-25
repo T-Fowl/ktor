@@ -10,7 +10,6 @@ import io.ktor.client.response.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.util.date.*
-import kotlinx.coroutines.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.*
 import kotlin.coroutines.*
@@ -35,13 +34,9 @@ internal class SavedHttpResponse(
 
     override val headers: Headers = origin.headers
 
-    override val coroutineContext: CoroutineContext = origin.coroutineContext + Job()
+    override val coroutineContext: CoroutineContext = origin.coroutineContext
 
     override val content: ByteReadChannel = ByteReadChannel(body)
-
-    override fun close() {
-        (coroutineContext[Job] as CompletableJob).complete()
-    }
 }
 
 /**

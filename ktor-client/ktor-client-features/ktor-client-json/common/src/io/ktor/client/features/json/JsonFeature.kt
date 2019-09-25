@@ -107,13 +107,11 @@ class JsonFeature internal constructor(
             scope.responsePipeline.intercept(HttpResponsePipeline.Transform) { (info, body) ->
                 if (body !is ByteReadChannel) return@intercept
 
-                if (feature.acceptContentTypes.none { context.response.contentType()?.match(it) == true })
+                if (feature.acceptContentTypes.none { context.response.contentType()?.match(it) == true }) {
                     return@intercept
-                try {
-                    proceedWith(HttpResponseContainer(info, feature.serializer.read(info, body.readRemaining())))
-                } finally {
-                    context.close()
                 }
+
+                proceedWith(HttpResponseContainer(info, feature.serializer.read(info, body.readRemaining())))
             }
         }
     }

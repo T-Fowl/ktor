@@ -48,27 +48,17 @@ fun HttpClient.defaultTransformers() {
 
         when (info.type) {
             Unit::class -> {
-                response.close()
                 proceedWith(HttpResponseContainer(info, Unit))
             }
             ByteReadPacket::class,
             Input::class -> {
-                try {
-                    proceedWith(HttpResponseContainer(info, body.readRemaining()))
-                } finally {
-                    response.close()
-                }
+                proceedWith(HttpResponseContainer(info, body.readRemaining()))
             }
             ByteArray::class -> {
-                try {
-                    val readRemaining = body.readRemaining(contentLength)
-                    proceedWith(HttpResponseContainer(info, readRemaining.readBytes()))
-                } finally {
-                    response.close()
-                }
+                val readRemaining = body.readRemaining(contentLength)
+                proceedWith(HttpResponseContainer(info, readRemaining.readBytes()))
             }
             HttpStatusCode::class -> {
-                response.close()
                 proceedWith(HttpResponseContainer(info, response.status))
             }
         }

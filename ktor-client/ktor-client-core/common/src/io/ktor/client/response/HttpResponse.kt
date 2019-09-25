@@ -9,7 +9,6 @@ import io.ktor.client.call.*
 import io.ktor.client.features.*
 import io.ktor.http.*
 import io.ktor.util.date.*
-import kotlinx.atomicfu.*
 import kotlinx.coroutines.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.charsets.*
@@ -18,7 +17,7 @@ import io.ktor.utils.io.core.*
 /**
  * A response for [HttpClient], second part of [HttpClientCall].
  */
-abstract class HttpResponse : HttpMessage, CoroutineScope, Closeable {
+abstract class HttpResponse : CoroutineScope, HttpMessage {
     /**
      * The associated [HttpClientCall] containing both
      * the underlying [HttpClientCall.request] and [HttpClientCall.response].
@@ -47,32 +46,9 @@ abstract class HttpResponse : HttpMessage, CoroutineScope, Closeable {
     abstract val responseTime: GMTDate
 
     /**
-     * A [Job] representing the process of this response.
-     */
-    @Deprecated(
-        "Binary compatibility.",
-        level = DeprecationLevel.HIDDEN
-    )
-    val executionContext: Job
-        get() = coroutineContext[Job]!!
-
-    /**
      * [ByteReadChannel] with the payload of the response.
      */
     abstract val content: ByteReadChannel
-
-    private val closed: AtomicBoolean = atomic(false)
-
-    @Suppress("KDocMissingDocumentation")
-    override fun close() {
-        if (!closed.compareAndSet(false, true)) return
-
-        launch {
-            content.cancel()
-        }
-        @Suppress("UNCHECKED_CAST")
-        (coroutineContext[Job] as CompletableJob).complete()
-    }
 }
 
 /**

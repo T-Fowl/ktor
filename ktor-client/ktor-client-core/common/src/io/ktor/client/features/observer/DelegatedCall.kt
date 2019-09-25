@@ -11,7 +11,6 @@ import io.ktor.client.response.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.util.date.*
-import kotlinx.coroutines.*
 import io.ktor.utils.io.*
 import kotlin.coroutines.*
 
@@ -58,9 +57,7 @@ internal class DelegatedResponse(
     override val content: ByteReadChannel,
     private val origin: HttpResponse
 ) : HttpResponse() {
-    private val completionState: CompletableJob = Job(origin.coroutineContext[Job])
-
-    override val coroutineContext: CoroutineContext = origin.coroutineContext + completionState
+    override val coroutineContext: CoroutineContext = origin.coroutineContext
 
     override val status: HttpStatusCode get() = origin.status
 
@@ -71,9 +68,4 @@ internal class DelegatedResponse(
     override val responseTime: GMTDate get() = origin.responseTime
 
     override val headers: Headers get() = origin.headers
-
-    override fun close() {
-        super.close()
-        completionState.complete()
-    }
 }

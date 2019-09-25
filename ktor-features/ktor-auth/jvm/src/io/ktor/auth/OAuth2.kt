@@ -223,8 +223,6 @@ private suspend fun oauth2RequestAccessToken(
         throw ioe
     } catch (t: Throwable) {
         throw IOException("Failed to acquire request token due to wrong content: $body", t)
-    } finally {
-        response.close()
     }
 
     val contentDecodeResult = Result.runCatching { decodeContent(content, contentType) }

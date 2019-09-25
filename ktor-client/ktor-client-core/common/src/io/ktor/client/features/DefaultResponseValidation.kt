@@ -24,21 +24,19 @@ fun HttpClientConfig<*>.addDefaultResponseValidation() {
             val originCall = response.call
             if (statusCode < 300 || originCall.attributes.contains(ValidateMark)) return@validateResponse
 
-            response.use {
-                val exceptionCall = originCall.save().apply {
-                    attributes.put(ValidateMark, Unit)
-                }
+            val exceptionCall = originCall.save().apply {
+                attributes.put(ValidateMark, Unit)
+            }
 
-                val exceptionResponse = exceptionCall.response
-                when (statusCode) {
-                    in 300..399 -> throw RedirectResponseException(exceptionResponse)
-                    in 400..499 -> throw ClientRequestException(exceptionResponse)
-                    in 500..599 -> throw ServerResponseException(exceptionResponse)
-                }
+            val exceptionResponse = exceptionCall.response
+            when (statusCode) {
+                in 300..399 -> throw RedirectResponseException(exceptionResponse)
+                in 400..499 -> throw ClientRequestException(exceptionResponse)
+                in 500..599 -> throw ServerResponseException(exceptionResponse)
+            }
 
-                if (statusCode >= 600) {
-                    throw ResponseException(exceptionResponse)
-                }
+            if (statusCode >= 600) {
+                throw ResponseException(exceptionResponse)
             }
         }
     }

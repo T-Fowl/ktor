@@ -50,7 +50,7 @@ class Logging(
         if (level.body) logRequestBody(content)
     }
 
-    private suspend fun logResponse(response: HttpResponse): Unit = response.use {
+    private suspend fun logResponse(response: HttpResponse) {
         if (level.info) {
             logger.log("RESPONSE: ${response.status}")
             logger.log("METHOD: ${response.call.request.method}")

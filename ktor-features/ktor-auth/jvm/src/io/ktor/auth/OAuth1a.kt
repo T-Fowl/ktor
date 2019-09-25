@@ -114,8 +114,6 @@ private suspend fun simpleOAuth1aStep1(
         )
     } catch (e: Throwable) {
         throw IOException("Failed to acquire request token due to $body", e)
-    } finally {
-        response.close()
     }
 }
 
@@ -189,8 +187,6 @@ private suspend fun requestOAuth1aAccessToken(
         throw cause
     } catch (cause: Throwable) {
         throw IOException("Failed to acquire request token due to $body", cause)
-    } finally {
-        response.close()
     }
 }
 

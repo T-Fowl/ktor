@@ -8,10 +8,9 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.response.*
 import io.ktor.util.*
+import io.ktor.utils.io.*
 import kotlinx.atomicfu.*
 import kotlinx.coroutines.*
-import io.ktor.utils.io.*
-import io.ktor.utils.io.core.*
 import kotlin.coroutines.*
 import kotlin.reflect.*
 
@@ -36,7 +35,7 @@ internal fun HttpClientCall(
  */
 open class HttpClientCall internal constructor(
     val client: HttpClient
-) : CoroutineScope, Closeable {
+) : CoroutineScope {
     private val received = atomic(false)
 
     override val coroutineContext: CoroutineContext get() = response.coroutineContext
@@ -88,22 +87,7 @@ open class HttpClientCall internal constructor(
             throw NoTransformationFoundException(from, to)
         }
 
-        if (result is ByteReadChannel) {
-            return response.channelWithCloseHandling()
-        }
-
-        if (result !is Closeable && result !is HttpRequest) {
-            close()
-        }
-
         return result
-    }
-
-    /**
-     * Closes the underlying [response].
-     */
-    override fun close() {
-        response.close()
     }
 
     companion object {

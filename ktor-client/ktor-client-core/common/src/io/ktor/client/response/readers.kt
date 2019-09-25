@@ -22,6 +22,7 @@ suspend fun HttpResponse.readBytes(): ByteArray = content.readRemaining(Long.MAX
 /**
  * Efficiently discards the remaining bytes of [HttpResponse.content].
  */
+@Deprecated("")
 suspend fun HttpResponse.discardRemaining() {
     content.discard()
 }
