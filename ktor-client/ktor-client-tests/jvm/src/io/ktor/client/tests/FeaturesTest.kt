@@ -10,6 +10,7 @@ import io.ktor.client.engine.*
 import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
 import io.ktor.client.response.*
+import io.ktor.client.statement.*
 import io.ktor.client.tests.utils.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -73,9 +74,10 @@ abstract class FeaturesTest(private val factory: HttpClientEngineFactory<*>) : T
             }
 
             test { client ->
-                val response = client.get<HttpResponse>(path = "/echo", port = serverPort)
-                val text = response.receive<String>()
-                assertEquals(body, text)
+                client.get<HttpStatement>(path = "/echo", port = serverPort).execute {
+                    val text = it.receive<String>()
+                    assertEquals(body, text)
+                }
             }
 
         }

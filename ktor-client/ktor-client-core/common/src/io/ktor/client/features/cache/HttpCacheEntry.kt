@@ -5,7 +5,7 @@
 package io.ktor.client.features.cache
 
 import io.ktor.client.call.*
-import io.ktor.client.response.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.util.date.*

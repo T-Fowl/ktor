@@ -6,7 +6,7 @@ package io.ktor.client.call
 
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
+import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
 import kotlinx.atomicfu.*
@@ -56,15 +56,6 @@ open class HttpClientCall internal constructor(
      */
     lateinit var response: HttpResponse
         internal set
-
-    /**
-     * Configuration for the [response].
-     */
-    @Deprecated(
-        message = "responseConfig is deprecated. Consider using [Charsets] config instead",
-        level = DeprecationLevel.ERROR
-    )
-    val responseConfig: HttpResponseConfig = client.engineConfig.response
 
     /**
      * Tries to receive the payload of the [response] as an specific [expectedType].

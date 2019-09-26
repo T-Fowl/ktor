@@ -6,9 +6,8 @@ package io.ktor.client.features
 
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.response.*
 import io.ktor.util.*
-import io.ktor.utils.io.core.*
+import io.ktor.client.statement.*
 import kotlin.jvm.*
 
 private val ValidateMark = AttributeKey<Unit>("ValidateMark")

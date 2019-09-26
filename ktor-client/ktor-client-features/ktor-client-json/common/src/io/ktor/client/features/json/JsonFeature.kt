@@ -7,7 +7,7 @@ package io.ktor.client.features.json
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
+import io.ktor.client.statement.*
 import io.ktor.client.utils.*
 import io.ktor.http.*
 import io.ktor.util.*
@@ -111,7 +111,12 @@ class JsonFeature internal constructor(
                     return@intercept
                 }
 
-                proceedWith(HttpResponseContainer(info, feature.serializer.read(info, body.readRemaining())))
+                proceedWith(
+                    HttpResponseContainer(
+                        info,
+                        feature.serializer.read(info, body.readRemaining())
+                    )
+                )
             }
         }
     }

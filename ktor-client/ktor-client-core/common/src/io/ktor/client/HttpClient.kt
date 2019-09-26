@@ -8,7 +8,7 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
+import io.ktor.client.statement.*
 import io.ktor.util.*
 import kotlinx.atomicfu.*
 import kotlinx.coroutines.*
@@ -73,7 +73,8 @@ class HttpClient(
     /**
      * Pipeline used for processing all the responses sent by the server.
      */
-    val responsePipeline: HttpResponsePipeline = HttpResponsePipeline()
+    val responsePipeline: HttpResponsePipeline =
+        HttpResponsePipeline()
 
     /**
      * Pipeline used for sending the request.
@@ -83,7 +84,8 @@ class HttpClient(
     /**
      * Pipeline used for receiving request.
      */
-    val receivePipeline: HttpReceivePipeline = HttpReceivePipeline()
+    val receivePipeline: HttpReceivePipeline =
+        HttpReceivePipeline()
 
     /**
      * Typed attributes used as a lightweight container for this client.

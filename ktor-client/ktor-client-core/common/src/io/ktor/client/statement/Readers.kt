@@ -2,27 +2,24 @@
  * Copyright 2014-2019 JetBrains s.r.o and contributors. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package io.ktor.client.response
-
-import io.ktor.utils.io.*
-import io.ktor.utils.io.core.*
+package io.ktor.client.statement
 
 /**
  * Exactly reads [count] bytes of the [HttpResponse.content].
  */
 suspend fun HttpResponse.readBytes(count: Int): ByteArray =
-    ByteArray(count).also { content.readFully(it) }
+    TODO()
 
 /**
  * Reads the whole [HttpResponse.content] if Content-Length was specified.
  * Otherwise it just reads one byte.
  */
-suspend fun HttpResponse.readBytes(): ByteArray = content.readRemaining(Long.MAX_VALUE).readBytes()
+suspend fun HttpResponse.readBytes(): ByteArray =
+    TODO()
 
 /**
  * Efficiently discards the remaining bytes of [HttpResponse.content].
  */
-@Deprecated("")
 suspend fun HttpResponse.discardRemaining() {
-    content.discard()
+    TODO()
 }
