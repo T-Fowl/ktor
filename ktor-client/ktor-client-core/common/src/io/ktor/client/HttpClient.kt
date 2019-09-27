@@ -139,6 +139,8 @@ class HttpClient(
     /**
      * Creates a new [HttpRequest] from a request [data] and a specific client [call].
      */
+
+    @Deprecated("", replaceWith = ReplaceWith("this.request<HttpStatement>(builder)", "io.ktor.client.statement.HttpStatement"))
     suspend fun execute(builder: HttpRequestBuilder): HttpClientCall =
         requestPipeline.execute(builder, builder.body) as HttpClientCall
 

@@ -27,28 +27,34 @@ class UnsupportedUpgradeProtocolException(
  * Constructs a [HttpClientCall] from this [HttpClient] and
  * with the specified HTTP request [builder].
  */
-suspend fun HttpClient.call(builder: HttpRequestBuilder): HttpClientCall = call { takeFrom(builder) }
+@Deprecated(
+    "",
+    replaceWith = ReplaceWith("this.request<HttpStatement>(urlString, block)", "io.ktor.client.statement.HttpStatement")
+)
+suspend fun HttpClient.call(builder: HttpRequestBuilder): HttpClientCall = TODO()
 
 /**
  * Constructs a [HttpClientCall] from this [HttpClient],
  * an [url] and an optional [block] configuring a [HttpRequestBuilder].
  */
+@Deprecated(
+    "",
+    replaceWith = ReplaceWith("this.request<HttpStatement>(urlString, block)", "io.ktor.client.statement.HttpStatement")
+)
 suspend fun HttpClient.call(
     urlString: String,
     block: suspend HttpRequestBuilder.() -> Unit = {}
-): HttpClientCall = call {
-    url.takeFrom(urlString)
-    block()
-}
+): HttpClientCall = TODO()
 
 /**
  * Constructs a [HttpClientCall] from this [HttpClient],
  * an [url] and an optional [block] configuring a [HttpRequestBuilder].
  */
+@Deprecated(
+    "",
+    replaceWith = ReplaceWith("this.request<HttpStatement>(url, block)", "io.ktor.client.statement.HttpStatement")
+)
 suspend fun HttpClient.call(
     url: Url,
     block: suspend HttpRequestBuilder.() -> Unit = {}
-): HttpClientCall = call {
-    this.url.takeFrom(url)
-    block()
-}
+): HttpClientCall = TODO()

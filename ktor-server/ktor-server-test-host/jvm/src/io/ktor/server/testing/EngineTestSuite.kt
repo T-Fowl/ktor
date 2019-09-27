@@ -7,7 +7,7 @@ package io.ktor.server.testing
 import io.ktor.application.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
+import io.ktor.client.statement.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.cio.*
@@ -117,7 +117,7 @@ abstract class EngineTestSuite<TEngine : ApplicationEngine, TConfiguration : App
         withUrl("/") {
             assertEquals(200, status.value)
             assertEquals(ContentType.Application.OctetStream, contentType())
-            assertTrue(Arrays.equals(byteArrayOf(25, 37, 42), readBytes()))
+            assertTrue(byteArrayOf(25, 37, 42).contentEquals(readBytes()))
         }
     }
 
@@ -1818,7 +1818,7 @@ abstract class EngineTestSuite<TEngine : ApplicationEngine, TConfiguration : App
             val expected = buildString {
                 produceText()
             }
-            call.receive<HttpResponse>().use { response ->
+            call.receive<HttpStatement>().execute { response ->
                 assertTrue { HttpHeaders.ContentEncoding in response.headers }
                 val array = response.receive<ByteArray>()
                 val text = GZIPInputStream(ByteArrayInputStream(array)).readBytes().toString(Charsets.UTF_8)

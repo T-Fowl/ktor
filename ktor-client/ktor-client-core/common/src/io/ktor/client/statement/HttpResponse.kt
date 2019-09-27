@@ -48,3 +48,12 @@ abstract class HttpResponse : HttpMessage, CoroutineScope {
     abstract val content: ByteReadChannel
 }
 
+
+@Deprecated("", replaceWith = ReplaceWith("this"))
+fun HttpResponse.close() {}
+
+@Deprecated("", replaceWith = ReplaceWith("this.also(block)"))
+fun HttpResponse.use(block: () -> Unit) {}
+
+@Deprecated("", replaceWith = ReplaceWith("this"))
+val HttpResponse.response: HttpResponse get() = this

@@ -8,7 +8,8 @@ import io.ktor.application.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
+import io.ktor.client.response.readText
+import io.ktor.client.statement.*
 import io.ktor.http.content.*
 import io.ktor.http.*
 import io.ktor.http.auth.*
@@ -90,14 +91,15 @@ private suspend fun simpleOAuth1aStep1(
         nonce = nonce
     ).sign(HttpMethod.Post, baseUrl, secretKey, extraParameters)
 
-    val response = client.call(URL(baseUrl.appendUrlParameters(extraParameters.formUrlEncode()))) {
+    val url = baseUrl.appendUrlParameters(extraParameters.formUrlEncode())
+
+    val response = client.post<HttpStatement>(url) {
         method = HttpMethod.Post
         header(HttpHeaders.Authorization, authHeader.render(HeaderValueEncoding.URI_ENCODE))
         header(HttpHeaders.Accept, ContentType.Any.toString())
-    }.response
+    }.execute()
 
     val body = response.readText()
-
     try {
         if (response.status != HttpStatusCode.OK) {
             throw IOException("Bad response: $response")

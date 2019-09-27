@@ -111,6 +111,15 @@ data class HttpEngineCall(val request: HttpRequest, val response: HttpResponse)
  * Constructs a [HttpClientCall] from this [HttpClient] and with the specified [HttpRequestBuilder]
  * configured inside the [block].
  */
+@Deprecated(
+    "",
+    level = DeprecationLevel.ERROR,
+    replaceWith = ReplaceWith(
+        "this.request<HttpStatement>(block)",
+        "io.ktor.client.request.request",
+        "io.ktor.client.statement.HttpStatement"
+    )
+)
 suspend fun HttpClient.call(block: suspend HttpRequestBuilder.() -> Unit = {}): HttpClientCall =
     execute(HttpRequestBuilder().apply { block() })
 

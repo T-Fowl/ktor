@@ -13,7 +13,7 @@ import kotlin.coroutines.*
 @Deprecated(
     "",
     level = DeprecationLevel.ERROR,
-    replaceWith = ReplaceWith("HttpStatement", "import io.ktor.client.statement.*")
+    replaceWith = ReplaceWith("HttpStatement", "io.ktor.client.statement.HttpStatement")
 )
 class HttpResponse : CoroutineScope, HttpMessage {
     override val coroutineContext: CoroutineContext

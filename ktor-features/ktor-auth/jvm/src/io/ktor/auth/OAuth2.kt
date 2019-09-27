@@ -9,6 +9,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.response.*
+import io.ktor.client.statement.*
 import io.ktor.http.content.*
 import io.ktor.http.*
 import io.ktor.http.auth.*
@@ -208,7 +209,8 @@ private suspend fun oauth2RequestAccessToken(
         configure()
     }
 
-    val response = client.call(request).response
+    val response = client.request<HttpStatement>(request)
+        .execute()
 
     val body = response.readText()
 

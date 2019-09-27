@@ -10,6 +10,8 @@ import io.ktor.client.engine.mock.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.client.response.*
+import io.ktor.client.response.readText
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import kotlinx.coroutines.*
@@ -51,12 +53,12 @@ class MockEngineTests {
             expectSuccess = false
         }
 
-        client.call { url("http://127.0.0.1/normal-request") }.apply {
+        client.request<HttpStatement> { url("http://127.0.0.1/normal-request") }.execute { response ->
             assertEquals("http://127.0.0.1/normal-request", response.readText())
             assertEquals(HttpStatusCode.OK, response.status)
         }
 
-        client.call { url("http://127.0.0.1/fail") }.apply {
+        client.request<HttpStatement> { url("http://127.0.0.1/fail") }.execute { response ->
             assertEquals("Bad Request", response.readText())
             assertEquals(HttpStatusCode.BadRequest, response.status)
         }

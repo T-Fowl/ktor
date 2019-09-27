@@ -9,17 +9,31 @@ import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 
 class HttpStatement {
-    suspend fun execute(block: suspend (response: HttpResponse) -> Unit) {
+    suspend fun <T> execute(block: suspend (response: HttpResponse) -> T): T {
+        TODO()
     }
 
     suspend fun execute(): HttpResponse {
         TODO()
     }
+
+    suspend inline fun <reified T> receive(): T {
+        TODO()
+    }
 }
 
-@Deprecated("TODO", level = DeprecationLevel.WARNING, replaceWith = ReplaceWith("execute"))
-fun HttpStatement.use(block: suspend (response: HttpResponse) -> Unit) {
+@Deprecated(
+    "TODO",
+    level = DeprecationLevel.WARNING,
+    replaceWith = ReplaceWith("this.execute<T>(block)")
+)
+fun <T> HttpStatement.use(block: suspend (response: HttpResponse) -> T) {
 }
+
+
+@Deprecated("", level = DeprecationLevel.ERROR, replaceWith = ReplaceWith("this.execute()"))
+val HttpStatement.response: HttpResponse
+    get() = error("")
 
 /**
  * Read the [HttpResponse.content] as a String. You can pass an optional [charset]

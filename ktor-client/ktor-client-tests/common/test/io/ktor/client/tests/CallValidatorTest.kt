@@ -68,7 +68,7 @@ class CallValidatorTest {
         }
         test { client ->
             try {
-                client.call()
+                client.request<HttpStatement>().execute()
             } catch (_: CallValidatorTestException) {
             }
 

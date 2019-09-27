@@ -5,8 +5,15 @@
 package io.ktor.client.request
 
 import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.net.*
+
+
+suspend inline fun <reified T> HttpClient.request(url: URL, block: HttpRequestBuilder.() -> Unit = {}): T {
+    TODO()
+}
 
 /**
  * Executes a [HttpClient] GET request, with the specified [url] as URL and

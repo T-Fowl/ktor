@@ -29,7 +29,7 @@ suspend inline fun <reified T> HttpClient.request(block: HttpRequestBuilder.() -
  * and tries to receive a specific type [T], if fails, an exception is thrown.
  */
 suspend inline fun <reified T> HttpClient.request(
-    urlString: String, block: HttpRequestBuilder.() -> Unit
+    urlString: String, block: HttpRequestBuilder.() -> Unit = {}
 ): T = request(HttpRequestBuilder().apply {
     url(urlString)
     block()
@@ -40,7 +40,7 @@ suspend inline fun <reified T> HttpClient.request(
  * and tries to receive a specific type [T], if fails, an exception is thrown.
  */
 suspend inline fun <reified T> HttpClient.request(
-    url: Url, block: HttpRequestBuilder.() -> Unit
+    url: Url, block: HttpRequestBuilder.() -> Unit = {}
 ): T = request(HttpRequestBuilder().apply {
     url(url)
     block()
