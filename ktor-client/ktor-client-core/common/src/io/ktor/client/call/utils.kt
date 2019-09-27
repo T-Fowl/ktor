@@ -6,12 +6,8 @@ package io.ktor.client.call
 
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.response.*
 import io.ktor.http.*
 import io.ktor.http.content.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.CancellationException
-import io.ktor.utils.io.*
 
 
 @Suppress("KDocMissingDocumentation")
@@ -29,7 +25,8 @@ class UnsupportedUpgradeProtocolException(
  */
 @Deprecated(
     "",
-    replaceWith = ReplaceWith("this.request<HttpStatement>(urlString, block)", "io.ktor.client.statement.HttpStatement")
+    level = DeprecationLevel.ERROR,
+    replaceWith = ReplaceWith("this.request<HttpStatement>(builder)", "io.ktor.client.statement.HttpStatement")
 )
 suspend fun HttpClient.call(builder: HttpRequestBuilder): HttpClientCall = TODO()
 
@@ -39,6 +36,7 @@ suspend fun HttpClient.call(builder: HttpRequestBuilder): HttpClientCall = TODO(
  */
 @Deprecated(
     "",
+    level = DeprecationLevel.ERROR,
     replaceWith = ReplaceWith("this.request<HttpStatement>(urlString, block)", "io.ktor.client.statement.HttpStatement")
 )
 suspend fun HttpClient.call(
@@ -52,6 +50,7 @@ suspend fun HttpClient.call(
  */
 @Deprecated(
     "",
+    level = DeprecationLevel.ERROR,
     replaceWith = ReplaceWith("this.request<HttpStatement>(url, block)", "io.ktor.client.statement.HttpStatement")
 )
 suspend fun HttpClient.call(

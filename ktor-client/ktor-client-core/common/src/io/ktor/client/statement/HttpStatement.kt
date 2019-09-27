@@ -4,22 +4,39 @@
 
 package io.ktor.client.statement
 
-import io.ktor.client.features.*
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
 import io.ktor.utils.io.charsets.*
-import io.ktor.utils.io.core.*
+import kotlinx.coroutines.*
 
-class HttpStatement {
+class HttpStatement(
+    private val builder: HttpRequestBuilder,
+    private val client: HttpClient
+) {
     suspend fun <T> execute(block: suspend (response: HttpResponse) -> T): T {
-        TODO()
+        val builder = HttpRequestBuilder().takeFrom(builder)
+        @Suppress("DEPRECATION_ERROR")
+        val call = client.execute(builder)
+
+        try {
+            return block(call.response)
+        } finally {
+            val job = call.coroutineContext[Job]!! as CompletableJob
+
+            job.apply {
+                complete()
+                join()
+            }
+        }
     }
 
-    suspend fun execute(): HttpResponse {
-        TODO()
+    suspend fun execute(): HttpResponse = execute {
+        val savedCall = it.call.save()
+        savedCall.response
     }
 
-    suspend inline fun <reified T> receive(): T {
-        TODO()
-    }
+    suspend inline fun <reified T> receive(): T = execute<T> { it.receive<T>() }
 }
 
 @Deprecated(

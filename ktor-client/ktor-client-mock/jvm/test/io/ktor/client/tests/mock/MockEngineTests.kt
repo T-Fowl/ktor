@@ -35,7 +35,7 @@ class MockEngineTests {
         }
 
         assertEquals(byteArrayOf(1, 2, 3).toList(), client.get<ByteArray>("/").toList())
-        assertEquals("My Value", client.call("/").response.headers["X-MyHeader"])
+        assertEquals("My Value", client.request<HttpStatement>("/").execute().headers["X-MyHeader"])
         assertEquals("Not Found other/path", client.get<String>("/other/path"))
 
         Unit

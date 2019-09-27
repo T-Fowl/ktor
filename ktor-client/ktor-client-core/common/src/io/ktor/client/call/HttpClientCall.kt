@@ -120,8 +120,7 @@ data class HttpEngineCall(val request: HttpRequest, val response: HttpResponse)
         "io.ktor.client.statement.HttpStatement"
     )
 )
-suspend fun HttpClient.call(block: suspend HttpRequestBuilder.() -> Unit = {}): HttpClientCall =
-    execute(HttpRequestBuilder().apply { block() })
+suspend fun HttpClient.call(block: suspend HttpRequestBuilder.() -> Unit = {}): HttpClientCall = error("")
 
 /**
  * Tries to receive the payload of the [response] as an specific type [T].

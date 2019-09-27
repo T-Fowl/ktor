@@ -6,6 +6,7 @@ package io.ktor.client.statement
 
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.date.*
 import io.ktor.utils.io.*
@@ -57,3 +58,5 @@ fun HttpResponse.use(block: () -> Unit) {}
 
 @Deprecated("", replaceWith = ReplaceWith("this"))
 val HttpResponse.response: HttpResponse get() = this
+
+val HttpResponse.request: HttpRequest get() = call.request
