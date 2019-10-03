@@ -30,7 +30,7 @@ class CommonLoggingTest {
         test { client ->
             var failed = false
             try {
-                val response = client.get<HttpStatement>()
+                val response = client.get<HttpStatement>().execute()
             } catch (_: Throwable) {
                 failed = true
             }

@@ -17,8 +17,8 @@ import java.util.concurrent.*
 abstract class TestWithKtor {
     protected val serverPort: Int = ServerSocket(0).use { it.localPort }
 
-    @get:Rule
-    open val timeout = CoroutinesTimeout.seconds(3 * 60)
+//    @get:Rule
+//    open val timeout = CoroutinesTimeout.seconds(10)
 
     abstract val server: ApplicationEngine
 

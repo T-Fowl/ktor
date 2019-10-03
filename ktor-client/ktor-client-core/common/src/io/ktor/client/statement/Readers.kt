@@ -4,22 +4,23 @@
 
 package io.ktor.client.statement
 
+import io.ktor.utils.io.*
+import io.ktor.utils.io.core.*
+
 /**
  * Exactly reads [count] bytes of the [HttpResponse.content].
  */
-suspend fun HttpResponse.readBytes(count: Int): ByteArray =
-    TODO()
+suspend fun HttpResponse.readBytes(count: Int): ByteArray = content.readRemaining(count.toLong()).readBytes()
 
 /**
  * Reads the whole [HttpResponse.content] if Content-Length was specified.
  * Otherwise it just reads one byte.
  */
-suspend fun HttpResponse.readBytes(): ByteArray =
-    TODO()
+suspend fun HttpResponse.readBytes(): ByteArray = content.readRemaining().readBytes()
 
 /**
  * Efficiently discards the remaining bytes of [HttpResponse.content].
  */
 suspend fun HttpResponse.discardRemaining() {
-    TODO()
+    content.discard()
 }

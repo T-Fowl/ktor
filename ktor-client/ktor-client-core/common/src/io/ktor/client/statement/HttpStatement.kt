@@ -7,8 +7,12 @@ package io.ktor.client.statement
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.utils.io.*
 import io.ktor.utils.io.charsets.*
+import io.ktor.utils.io.core.*
 import kotlinx.coroutines.*
+import kotlin.reflect.*
 
 class HttpStatement(
     private val builder: HttpRequestBuilder,
@@ -26,6 +30,7 @@ class HttpStatement(
 
             job.apply {
                 complete()
+                call.response.content.cancel()
                 join()
             }
         }
@@ -36,7 +41,14 @@ class HttpStatement(
         savedCall.response
     }
 
-    suspend inline fun <reified T> receive(): T = execute<T> { it.receive<T>() }
+    @UseExperimental(ExperimentalStdlibApi::class)
+    suspend inline fun <reified T> receive(): T {
+        if (typeOf<T>() == typeOf<HttpStatement>()) {
+            return this as T
+        }
+
+        return execute<T> { it.receive<T>() }
+    }
 }
 
 @Deprecated(
@@ -62,5 +74,9 @@ val HttpStatement.response: HttpResponse
  *      So it just acts as a fallback, honoring the server preference.
  */
 suspend fun HttpResponse.readText(charset: Charset? = null): String {
-    TODO()
+    val originCharset = charset() ?: charset ?: Charsets.UTF_8
+    val decoder = originCharset.newDecoder()
+    val input = receive<Input>()
+
+    return decoder.decode(input)
 }

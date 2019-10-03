@@ -7,8 +7,10 @@ package io.ktor.client.features
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
+import kotlinx.coroutines.*
 
 /**
  * [HttpClient] feature that handles http redirect
@@ -32,6 +34,7 @@ class HttpRedirect {
             while (true) {
                 val location = call.response.headers[HttpHeaders.Location]
 
+                call.cancel()
                 call = execute(HttpRequestBuilder().apply {
                     takeFrom(origin.request)
                     url.parameters.clear()

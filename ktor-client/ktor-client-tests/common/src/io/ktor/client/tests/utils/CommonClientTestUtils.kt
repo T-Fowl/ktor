@@ -54,7 +54,7 @@ fun <T : HttpClientEngineConfig> clientTest(
     }
 
     try {
-        client.coroutineContext[Job]?.join()
+        client.coroutineContext[Job]!!.join()
     } catch (cause: Throwable) {
         client.cancel()
         throw cause
