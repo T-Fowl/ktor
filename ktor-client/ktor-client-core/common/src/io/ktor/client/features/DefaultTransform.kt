@@ -47,6 +47,7 @@ fun HttpClient.defaultTransformers() {
 
         when (info.type) {
             Unit::class -> {
+                body.cancel()
                 proceedWith(HttpResponseContainer(info, Unit))
             }
             Int::class -> {
@@ -61,6 +62,7 @@ fun HttpClient.defaultTransformers() {
                 proceedWith(HttpResponseContainer(info, readRemaining.readBytes()))
             }
             HttpStatusCode::class -> {
+                body.cancel()
                 proceedWith(HttpResponseContainer(info, response.status))
             }
         }

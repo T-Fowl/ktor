@@ -15,6 +15,7 @@ import java.net.*
  */
 @Deprecated(
     "",
+    level = DeprecationLevel.ERROR,
     replaceWith = ReplaceWith("this.request<HttpStatement>(url, block)", "io.ktor.client.statement.HttpStatement")
 )
 suspend fun HttpClient.call(url: URL, block: HttpRequestBuilder.() -> Unit = {}): HttpClientCall = TODO()

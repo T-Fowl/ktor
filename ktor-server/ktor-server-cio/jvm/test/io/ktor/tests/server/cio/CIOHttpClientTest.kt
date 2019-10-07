@@ -68,12 +68,12 @@ class CIOHttpClientTest {
 
         val port = portSync.take()
         val client = HttpClient(CIO)
-        val response = client.call(URL("http://127.0.0.1:$port/")) {
+        val response = client.request<HttpStatement>("http://127.0.0.1:$port/") {
             method = HttpMethod.Post
             url.encodedPath = "/url"
             header("header", "value")
             body = "request-body"
-        }.response
+        }.execute()
 
         try {
             assertEquals(HttpStatusCode.OK, response.status)

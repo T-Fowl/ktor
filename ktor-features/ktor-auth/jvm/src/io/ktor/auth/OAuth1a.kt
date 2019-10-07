@@ -164,9 +164,7 @@ private suspend fun requestOAuth1aAccessToken(
     val authHeader = createUpgradeRequestTokenHeader(consumerKey, token, nonce)
         .sign(HttpMethod.Post, baseUrl, secretKey, params)
 
-    val response = client.call(URL(baseUrl)) {
-        method = HttpMethod.Post
-
+    val body = client.post<String>(baseUrl) {
         header(HttpHeaders.Authorization, authHeader.render(HeaderValueEncoding.URI_ENCODE))
         header(HttpHeaders.Accept, "*/*")
         // some of really existing OAuth servers don't support other accept header values so keep it
@@ -175,9 +173,8 @@ private suspend fun requestOAuth1aAccessToken(
             { params.formUrlEncodeTo(this) },
             ContentType.Application.FormUrlEncoded
         )
-    }.response
+    }
 
-    val body = response.readText()
     try {
         val parameters = body.parseUrlEncodedParameters()
         return OAuthAccessTokenResponse.OAuth1a(

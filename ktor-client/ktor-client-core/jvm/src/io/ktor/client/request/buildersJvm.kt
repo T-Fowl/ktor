@@ -10,9 +10,17 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.net.*
 
-
-suspend inline fun <reified T> HttpClient.request(url: URL, block: HttpRequestBuilder.() -> Unit = {}): T {
-    TODO()
+/**
+ * Executes a [HttpClient] request, with the specified [url] as URL and
+ * an optional [block] receiving an [HttpRequestBuilder] for further configuring the request.
+ *
+ * Tries to receive a specific type [T], if fails, an exception is thrown.
+ */
+suspend inline fun <reified T> HttpClient.request(
+    url: URL, block: HttpRequestBuilder.() -> Unit = {}
+): T = request {
+    this.url.takeFrom(url)
+    block()
 }
 
 /**

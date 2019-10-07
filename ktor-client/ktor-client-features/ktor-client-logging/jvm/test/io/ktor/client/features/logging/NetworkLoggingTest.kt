@@ -234,9 +234,10 @@ BODY END
                 body?.let { this@request.body = body }
             }.execute {
                 it.readText()
-                it.coroutineContext[Job]!!.join()
+                it
             }
 
+            response.coroutineContext[Job]!!.join()
             assertEquals(expected.toLowerCase(), testLogger.dump().toLowerCase())
         }
     }

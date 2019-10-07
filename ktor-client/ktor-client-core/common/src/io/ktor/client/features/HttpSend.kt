@@ -9,6 +9,7 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.content.*
 import io.ktor.util.*
+import kotlinx.coroutines.*
 
 /**
  * HttpSend pipeline interceptor function
@@ -69,6 +70,7 @@ class HttpSend(
                         val transformed = interceptor(sender, currentCall)
                         if (transformed === currentCall) continue@passInterceptors
 
+                        currentCall.cancel()
                         currentCall = transformed
                         callChanged = true
                         break@passInterceptors
